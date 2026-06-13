@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Client Intake Form - Professional and Accessible">
+    <title>Client Intake Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="form-header">
+            <h1>Client Intake Form</h1>
+            <p class="subtitle">Help us get to know you better. This form takes about 5 minutes to complete.</p>
+        </header>
+
+        <main>
+            <form id="intakeForm" class="intake-form" novalidate>
+                <!-- Personal Information Section -->
+                <fieldset class="form-section">
+                    <legend>Personal Information</legend>
+                    
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required" aria-label="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="firstNameError"
+                            placeholder="John"
+                        >
+                        <span id="firstNameError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required" aria-label="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="lastNameError"
+                            placeholder="Doe"
+                        >
+                        <span id="lastNameError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required" aria-label="required">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="emailError"
+                            placeholder="john.doe@example.com"
+                        >
+                        <span id="emailError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required" aria-label="required">*</span></label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="phoneError"
+                            placeholder="(555) 123-4567"
+                        >
+                        <span id="phoneError" class="error-message" role="alert"></span>
+                    </div>
+                </fieldset>
+
+                <!-- Company Information Section -->
+                <fieldset class="form-section">
+                    <legend>Company Information</legend>
+                    
+                    <div class="form-group">
+                        <label for="companyName">Company Name <span class="required" aria-label="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="companyName" 
+                            name="companyName" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="companyNameError"
+                            placeholder="Your Company Name"
+                        >
+                        <span id="companyNameError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companySize">Company Size <span class="required" aria-label="required">*</span></label>
+                        <select 
+                            id="companySize" 
+                            name="companySize" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="companySizeError"
+                        >
+                            <option value="">Select an option</option>
+                            <option value="1-10">1-10 employees</option>
+                            <option value="11-50">11-50 employees</option>
+                            <option value="51-100">51-100 employees</option>
+                            <option value="101-500">101-500 employees</option>
+                            <option value="500+">500+ employees</option>
+                        </select>
+                        <span id="companySizeError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry <span class="required" aria-label="required">*</span></label>
+                        <select 
+                            id="industry" 
+                            name="industry" 
+                            required 
+                            aria-required="true"
+                            aria-describedby="industryError"
+                        >
+                            <option value="">Select an option</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail</option>
+                            <option value="education">Education</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span id="industryError" class="error-message" role="alert"></span>
+                    </div>
+                </fieldset>
+
+                <!-- Service Interest Section -->
+                <fieldset class="form-section">
+                    <legend>Services of Interest</legend>
+                    <p class="fieldset-description">Select all that apply:</p>
+                    
+                    <div class="checkbox-group">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                id="consulting" 
+                                name="services" 
+                                value="consulting"
+                                aria-describedby="servicesError"
+                            >
+                            <label for="consulting">Consulting</label>
+                        </div>
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                id="development" 
+                                name="services" 
+                                value="development"
+                                aria-describedby="servicesError"
+                            >
+                            <label for="development">Development</label>
+                        </div>
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                id="design" 
+                                name="services" 
+                                value="design"
+                                aria-describedby="servicesError"
+                            >
+                            <label for="design">Design</label>
+                        </div>
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                id="support" 
+                                name="services" 
+                                value="support"
+                                aria-describedby="servicesError"
+                            >
+                            <label for="support">Support</label>
+                        </div>
+                    </div>
+                    <span id="servicesError" class="error-message" role="alert"></span>
+                </fieldset>
+
+                <!-- Additional Information Section -->
+                <fieldset class="form-section">
+                    <legend>Additional Information</legend>
+                    
+                    <div class="form-group">
+                        <label for="message">Tell us about your project or needs</label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            rows="5" 
+                            placeholder="Please describe what you're looking to accomplish..."
+                            aria-describedby="messageError"
+                        ></textarea>
+                        <span id="messageError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="referral">How did you hear about us?</label>
+                        <select id="referral" name="referral" aria-describedby="referralError">
+                            <option value="">Select an option</option>
+                            <option value="search">Search Engine</option>
+                            <option value="social">Social Media</option>
+                            <option value="referral">Referral</option>
+                            <option value="advertising">Advertising</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span id="referralError" class="error-message" role="alert"></span>
+                    </div>
+
+                    <div class="form-check">
+                        <input 
+                            type="checkbox" 
+                            id="newsletter" 
+                            name="newsletter" 
+                            value="yes"
+                        >
+                        <label for="newsletter">I'd like to receive updates about your services</label>
+                    </div>
+                </fieldset>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-secondary">Clear Form</button>
+                </div>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message" role="status" aria-live="polite"></div>
+            </form>
+        </main>
+
+        <footer class="form-footer">
+            <p>Your information is safe and secure. We respect your privacy.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
