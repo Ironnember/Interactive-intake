@@ -235,6 +235,12 @@ textarea.error {
     margin-top: 20px;
 }
 
+.success-message.error {
+    background-color: #ffebee;
+    border-left-color: var(--error-color);
+    color: var(--error-color);
+}
+
 .success-message.show {
     display: block;
     animation: slideIn 0.3s ease;

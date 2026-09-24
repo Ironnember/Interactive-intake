@@ -12,7 +12,7 @@ A modern, smooth, and fully accessible client intake form designed to provide an
 - **Clear visual hierarchy** for easy navigation
 
 ### ♿ Accessibility
-- **WCAG 2.1 AAA compliant** form design
+- **Accessibility-minded** form design (independent WCAG conformance testing has not been completed)
 - **Semantic HTML** with proper fieldsets and legends
 - **ARIA labels and descriptions** for screen readers
 - **Focus indicators** that meet contrast requirements
@@ -70,28 +70,19 @@ Interactive functionality including:
 2. Open `index.html` in your web browser
 3. No external dependencies required - this is pure HTML, CSS, and JavaScript
 
-### Usage
-The form is ready to use immediately. To integrate with your backend:
+### Submission setup
 
-1. **Update the API endpoint** in `script.js`:
-   ```javascript
-   fetch('/api/intake', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(data)
-   })
-   ```
+This repository is a static form. It does not include an intake API or store submissions. With no endpoint configured, the Submit button is disabled and the page tells visitors that intake is unavailable.
 
-2. **Customize form fields** in `index.html` as needed
+To accept submissions, provide a secure HTTPS endpoint and set `data-intake-endpoint` on the form in `index.html` to its URL. The endpoint must accept JSON via POST and return a successful HTTP status with JSON containing a nonempty string `receiptId` **after** the submission has been durably accepted. A response without that receipt is shown as an error, and the form remains populated. Ensure your endpoint validates and protects the submitted personal information, enforces rate limits and access controls, and supports cross-origin requests if hosted on another domain. Do not use a client-visible receipt as an authorization token.
 
-3. **Adjust colors** in `styles.css` using CSS variables:
-   ```css
-   :root {
-       --primary-color: #0066cc;
-       --secondary-color: #f5f5f5;
-       /* ... other variables ... */
-   }
-   ```
+Example successful response:
+
+```json
+{"receiptId":"example-123"}
+```
+
+Customize fields in `index.html`, validation in `script.js`, and theme colors in `styles.css` for your own intake process.
 
 ## Form Sections
 
@@ -164,7 +155,7 @@ This form has been designed with accessibility in mind. To verify:
 - **Optimized CSS** with minimal repaints
 - **Efficient JavaScript** with event delegation
 - **Responsive images** ready for optimization
-- **Lighthouse scores**: 95+ for Performance and Accessibility
+- Lighthouse scores have not been independently measured
 
 ## Security
 
@@ -187,7 +178,7 @@ When deploying:
 
 ## License
 
-This project is open source and available for use.
+No license file is currently included; add a license before claiming open-source reuse rights.
 
 ## Support
 

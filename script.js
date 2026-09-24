@@ -1,6 +1,15 @@
 // Form Validation and Interaction
 const form = document.getElementById('intakeForm');
 const successMessage = document.getElementById('successMessage');
+const submitBtn = form.querySelector('button[type="submit"]');
+const intakeEndpoint = form.dataset.intakeEndpoint?.trim();
+
+if (!intakeEndpoint) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Intake unavailable';
+    form.querySelectorAll('input, select, textarea').forEach(field => field.disabled = true);
+    showStatus('Online intake is not available yet. Please do not enter personal information.', 'error');
+}
 
 // Validation Rules
 const validationRules = {
@@ -68,11 +77,13 @@ function validateField(fieldName) {
         field.classList.add('error');
         errorElement.textContent = rule.message;
         errorElement.classList.add('show');
+        field.setAttribute('aria-invalid', 'true');
         return false;
     } else {
         field.classList.remove('error');
         errorElement.textContent = '';
         errorElement.classList.remove('show');
+        field.removeAttribute('aria-invalid');
         return true;
     }
 }
@@ -107,7 +118,9 @@ function validateForm() {
     });
     
     // Validate optional field character limit
-    validateField('message');
+    if (!validateField('message')) {
+        isValid = false;
+    }
     
     // Validate services checkbox group
     if (!validateCheckboxGroup('services')) {
@@ -133,67 +146,47 @@ inputFields.forEach(field => {
     });
 });
 
-// Handle Form Submission
-function handleFormSubmit() {
+// Submission requires an endpoint that returns a durable receipt.
+async function handleFormSubmit() {
+    if (!intakeEndpoint) {
+        showStatus('Online intake is not available yet.', 'error');
+        return;
+    }
+
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
-    
-    // Collect multiple checkboxes
-    const services = formData.getAll('services');
-    data.services = services.length > 0 ? services.join(', ') : 'None selected';
-    
-    console.log('Form Data:', data);
-    
-    // Simulate API call
-    submitToServer(data);
-}
+    data.services = formData.getAll('services');
 
-function submitToServer(data) {
-    // Show loading state
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
-    
-    // Simulate API delay
-    setTimeout(() => {
-        // In a real application, you would send the data to your server
-        // Example:
-        // fetch('/api/intake', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(data)
-        // })
-        // .then(response => response.json())
-        // .then(result => showSuccessMessage())
-        // .catch(error => showErrorMessage(error));
-        
-        showSuccessMessage();
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+    successMessage.classList.remove('show');
+
+    try {
+        const response = await fetch(intakeEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('Intake request failed');
+        const result = await response.json();
+        if (typeof result.receiptId !== 'string' || !result.receiptId.trim()) {
+            throw new Error('No receipt returned');
+        }
+        showStatus('Your request was received. Receipt: ' + result.receiptId, 'success');
         form.reset();
-    }, 1500);
+    } catch (error) {
+        showStatus('We could not confirm receipt. Your form has not been cleared. Please try again later.', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+    }
 }
 
-function showSuccessMessage() {
-    successMessage.textContent = '✓ Your intake form has been submitted successfully! We will review your information and get back to you within 24 hours.';
+function showStatus(message, type) {
+    successMessage.textContent = message;
+    successMessage.classList.toggle('error', type === 'error');
     successMessage.classList.add('show');
-    
-    // Scroll to success message
     successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    
-    // Hide message after 6 seconds
-    setTimeout(() => {
-        successMessage.classList.remove('show');
-    }, 6000);
-}
-
-function showErrorMessage(error) {
-    successMessage.textContent = '✗ There was an error submitting your form. Please try again.';
-    successMessage.classList.add('show');
-    successMessage.style.backgroundColor = '#ffebee';
-    successMessage.style.borderColor = '#d32f2f';
-    successMessage.style.color = '#d32f2f';
 }
 
 // Reset form button functionality
@@ -205,20 +198,11 @@ form.querySelector('button[type="reset"]').addEventListener('click', () => {
         msg.textContent = '';
     });
     
+    const invalidFields = form.querySelectorAll('[aria-invalid]');
+    invalidFields.forEach(field => field.removeAttribute('aria-invalid'));
     const inputFields = form.querySelectorAll('.error');
     inputFields.forEach(field => field.classList.remove('error'));
     
-    successMessage.classList.remove('show');
+    if (intakeEndpoint) successMessage.classList.remove('show');
 });
 
-// Keyboard navigation improvements
-form.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        const formElements = Array.from(form.elements);
-        const currentIndex = formElements.indexOf(e.target);
-        if (currentIndex < formElements.length - 1) {
-            formElements[currentIndex + 1].focus();
-        }
-    }
-});
